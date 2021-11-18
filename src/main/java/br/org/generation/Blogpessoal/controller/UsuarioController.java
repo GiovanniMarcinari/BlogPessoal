@@ -1,6 +1,5 @@
 package br.org.generation.Blogpessoal.controller;
 
-
 import java.util.List;
 import java.util.Optional;
 
