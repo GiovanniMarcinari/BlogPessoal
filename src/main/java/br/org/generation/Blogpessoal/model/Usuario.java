@@ -11,41 +11,58 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
-@Table(name="tb_usuarios")
+@Table(name = "tb_usuarios")
 public class Usuario {
 
-	@Id			
-	@GeneratedValue(strategy = GenerationType.IDENTITY)		
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@NotBlank(message = "O campo nome é obrigatório!")	
+
+	@NotNull(message = "O atributo Nome é Obrigatório!")
 	private String nome;
-	
-	@NotBlank(message = "O campo usuário é obrigatório!")	
-	@Email(message="O campo email deve ser um email válido!")
+
+	@ApiModelProperty(example = "email@email.com.br")
+	@NotNull(message = "O atributo Usuário é Obrigatório!")
+	@Email(message = "O atributo Usuário deve ser um email!")
 	private String usuario;
-	
-	@NotBlank(message = "O campo senha é obrigatório!")	
-	@Size(min = 8, message = "Min de caractéres 8")
+
+	@NotBlank(message = "O atributo Senha é Obrigatória!")
+	@Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres")
 	private String senha;
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
-	
+
+	/**
+	 * Construtor com atributos da Classe Usuario
+	 * 
+	 *  *** Não adicionar o atributo postagem ***
+	 */
 	public Usuario(long id, String nome, String usuario, String senha) {
+		
 		this.id = id;
 		this.nome = nome;
 		this.usuario = usuario;
 		this.senha = senha;
+		
 	}
+
+	/**
+	 * Construtor sem atributos da Classe Usuario
+	 * 
+	 * Será utilizado para gerar Objetos Nulos
+	 */
+	public Usuario() { }
 	
-	public Usuario() {	}
 
 	public long getId() {
 		return id;
@@ -85,5 +102,6 @@ public class Usuario {
 
 	public void setPostagem(List<Postagem> postagem) {
 		this.postagem = postagem;
-	}	
+	}
+
 }
